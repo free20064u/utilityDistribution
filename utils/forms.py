@@ -2,7 +2,15 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
-from .models import UtilBill, Household
+from .models import UtilBill, Household, Appliance
+
+class ApplianceForm(ModelForm):
+    name = forms.CharField(label='Appliance Name', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Fridge'}))
+    power = forms.CharField(label='Appliance Name', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'200W'}))
+    class Meta:
+        model = Appliance
+        fields = ['name', 'power']
+
 
 
 class HouseholdForm(ModelForm):

@@ -1,0 +1,56 @@
+{% extends "base/base.html" %}
+
+{% block pageTitle %}Electrical Appliance{% endblock pageTitle %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="text-center">Electrical Appliance</h1>
+    <div class="row">
+        <div class="col-12 col-md-4">
+            {% include "accounts/menu.html" %}
+        </div>
+        <div class="col-12 col-md-8 mt-2">
+            <div class="row">
+                <div class="col-12 col-md-12 mb-1">
+                    <div class="row">
+                        <div class="col-9">
+                            <form class="d-flex">
+                                <input class="form-control" type="search" placeholder="Search">
+                                <button class="btn btn-outline-primary" type="submit">Search</button>
+                              </form>
+                        </div>
+                        <div class="col-3 text-end">
+                            <a href="{% url "addAppliance" %}"><button class="btn btn-outline-success" type="submit">Add Electric Appl</button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12">
+                    <table class="table table-striped table-info table-hover">
+                        <thead>
+                            <tr class="">
+                                <th scope="col" class="bg-dark text-white">No</th>
+                                <th scope="col" class="bg-dark text-white">Date</th>
+                                <th scope="col" class="bg-dark text-white">Appliance</th>
+                                <th scope="col" class="bg-dark text-white">Power</th>
+                                <th scope="col" class="bg-dark text-white">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {% for appliance in appliances  %}
+                            <tr>
+                                <th scope="col">{{ forloop.counter }} </th>
+                                <td scope="col">{{ appliance.date }} </td>
+                                <td scope="col">{{ appliance.name }} </td>
+                                <td scope="col">{{ appliance.power }}W</td>
+                                <td scope="col"><a href="{% url "editAppliance" appliance.id %}">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+{% endblock content %}

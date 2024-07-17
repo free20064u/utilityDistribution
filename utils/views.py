@@ -3,10 +3,55 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
 from accounts.forms import UserLoginForm
-from .forms import DustbinForm, HouseholdForm
-from .models import UtilBill, Household
+from .forms import DustbinForm, HouseholdForm, ApplianceForm
+from .models import UtilBill, Household, Appliance
 
 # Create your views here.
+def editApplianceView(request, id=None):
+    form = ApplianceForm(instance=Appliance.objects.get(id=id))
+    context = {
+        'form': form,
+        'edit': True,
+    }
+    if request.method == 'POST':
+        form = ApplianceForm(request.POST, instance=Appliance.objects.get(id=id))
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Appliance edited successfully')
+            return redirect('electricalAppliance')
+        else:
+            messages.error(request, 'Applaince edit not successful')
+            return render(request, 'utils/addAppliance.html', context)
+    else:
+        return render(request, 'utils/addAppliance.html', context)
+
+def addApplianceView(request):
+    form = ApplianceForm()
+    context = {
+        'form': form,
+    }
+    if request.method == 'POST':
+        form = ApplianceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'New appliance added')
+            return redirect('electricalAppliance')
+        else:
+            messages.error(request, 'Appliance not added')
+            return render(request, 'utils/addAppliance.html', context)  
+    else: 
+        return render(request, 'utils/addAppliance.html', context)
+    
+
+def electricalApplianceView(request):
+    appliances = Appliance.objects.all().order_by('name')
+    context = {
+        'appliances': appliances,
+    }
+    return render(request, 'utils/electricAppliance.html', context)
+
+
+
 def editHouseholdView(request, id=None):
     form = HouseholdForm(instance=Household.objects.get(id=id))
     context = {
