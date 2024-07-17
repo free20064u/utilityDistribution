@@ -1,11 +1,11 @@
 {% extends "base/base.html" %}
 
-{% block pageTitle %}Utility Bills{% endblock pageTitle %}
+{% block pageTitle %}Add Household{% endblock pageTitle %}
 
 {% block content %}
 
 <div class="container">
-    <h1 class="text-center">Utility Bills</h1>
+    <h1 class="text-center">{% if edit %}Edit {%else%} Add {% endif %}Household</h1>
     <div class="row">
         <div class="col-12 col-md-4">
             {% include "accounts/menu.html" %}

@@ -1,12 +1,59 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
 from accounts.forms import UserLoginForm
-from .forms import DustbinForm
-from .models import UtilBill
+from .forms import DustbinForm, HouseholdForm
+from .models import UtilBill, Household
 
 # Create your views here.
+def editHouseholdView(request, id=None):
+    form = HouseholdForm(instance=Household.objects.get(id=id))
+    context = {
+        'form': form,
+        'edit': True,
+    }
+    if request.method == 'POST':
+        form = HouseholdForm(request.POST, instance=Household.objects.get(id=id))
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Household edit successfully')
+            return redirect('household')
+        else:
+            return render(request, 'utils/addHousehold.html', context)
+    else:
+        return render(request, 'utils/addHousehold.html', context)
+
+
+def addHouseholdView(request):
+    form = HouseholdForm(initial={'user':request.user})
+    context = {
+        'form': form,
+    }
+    if request.method == 'POST':
+        form = HouseholdForm(request.POST)
+        if form.is_valid():
+            client = form.save(commit=False)
+            client.user = request.user
+            client.save()
+            messages.success(request, 'Household added')
+            return redirect('household')
+        else:
+            context['form'] = form
+            messages.error(request, 'Household not added')
+            return render(request, 'utils/addHousehold.html', context)
+    else:
+        return render(request, 'utils/addHousehold.html', context)
+
+
+def householdView(request):
+    households = Household.objects.all().order_by('name')
+    context = {
+        'households': households,
+    }
+    return render(request, 'utils/household.html', context)
+
+
 def editBillView(request, id=None):
     oldBill = UtilBill.objects.get(id=id)
     form = DustbinForm(instance=oldBill, initial={'dustbinBill':oldBill.dustbinBill, 'electricBill':oldBill.electricBill, 'waterBill':oldBill.waterBill, 'user':request.user})
@@ -15,7 +62,6 @@ def editBillView(request, id=None):
     }
     if request.method == 'POST':
         form = DustbinForm(request.POST, instance=UtilBill.objects.get(id=id))
-        print(form)
         if form.is_valid():
             bill = form.save(commit=False)
             bill.user = request.user
