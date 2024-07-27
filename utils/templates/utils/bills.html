@@ -19,6 +19,7 @@
                         <th scope="col" class="bg-dark text-white">Dustbin</th>
                         <th scope="col" class="bg-dark text-white">Electric</th>
                         <th scope="col" class="bg-dark text-white">Water</th>
+                        <th scope="col" class="bg-dark text-white">Total</th>
                         <th scope="col" class="bg-dark text-white">Bill Date</th>
                         <th scope="col" class="bg-dark text-white">Action</th>
                     </tr>
@@ -27,11 +28,12 @@
                     {% for bill in bills  %}
                     <tr>
                         <th scope="col">{{ forloop.counter }} </th>
-                        <td scope="col">{{ bill.dateAdded }} </td>
-                        <td scope="col">{{ bill.dustbinBill }}</td>
-                        <td scope="col">{{ bill.electricBill }}</td>
+                        <td scope="col">{{ bill.entryDate }} </td>
+                        <td scope="col">{{ bill.refuseBill }}</td>
+                        <td scope="col">{{ bill.electricityBill }}</td>
                         <td scope="col">{{ bill.waterBill }}</td>
-                        <td scope="col">{{ bill.billDate }}</td>
+                        <td scope="col">{{ bill.totalBill }}</td>
+                        <td scope="col">{{ bill.billOnDate }}</td>
                         <td scope="col"><a href="{% url "editBill" bill.id %}">Edit</a></td>
                     </tr>
                     {% endfor %}

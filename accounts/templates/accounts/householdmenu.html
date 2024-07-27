@@ -1,0 +1,8 @@
+<div class="row">
+    <div class="list-group p-2">
+        <a class="list-group-item list-group-item-action bg-danger text-white disabled fw-bolder">MONTHLY INPUT</a>
+        <a href="{% url "payBill" household.id %}" class="list-group-item list-group-item-action bg-danger text-white">Make Payment</a>
+        <a href="{% url "addHouseholdAppliance" household.id %}" class="list-group-item list-group-item-action bg-danger text-white">Add Appliance To Household</a>
+        <a href="{% url "addPeople" household.id %}" class="list-group-item list-group-item-action bg-danger text-white">Add No Of People</a> 
+    </div>
+</div>

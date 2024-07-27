@@ -16,4 +16,8 @@ urlpatterns = [
     path('electricalAppliance/', views.electricalApplianceView, name='electricalAppliance'),
     path('addAppliance/', views.addApplianceView, name='addAppliance'),
     path('editAppliance/<int:id>/', views.editApplianceView, name='editAppliance'),
-]
+    path('profile/<int:id>/', views.profileView, name='profile'),
+    path('addHouseholdAppliance/<int:id>/', views.addHouseholdApplianceView, name='addHouseholdAppliance'),
+    path('payBill/<int:id>/', views.payBillView, name='payBill'),
+    path('addPeople/<int:id>/', views.addPeopleView, name='addPeople'),
+ ]

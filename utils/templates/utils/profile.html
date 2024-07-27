@@ -1,0 +1,103 @@
+{% extends "base/base.html" %}
+
+{% block pageTitle %}Profile{% endblock pageTitle %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="text-center">{{ household.name }} </h1>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            {% include "accounts/menu.html" %}
+            {% include "accounts/householdmenu.html" %}
+        </div>
+        <div class="col-12 col-md-9 mt-2">
+            <div class="row">
+                <div class="col-9">
+                    <form class="d-flex">
+                        <input class="form-control" type="search" placeholder="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                      </form>
+                </div>
+                <div class="col-3 text-end">
+                    <a href="{% url "addHousehold" %}"><button class="btn btn-outline-success" type="submit">Add Household</button></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-12 mb-1 pt-4">
+                    <div class="row">     
+                        <div class="col-5 text-end">
+                            <table class="table table-striped table-info table-hover text-start">
+                                <thead>
+                                    <tr class="">
+                                        <th scope="col" class="bg-dark text-white">Date</th>
+                                        <th scope="col" class="bg-dark text-white">Item</th>
+                                        <th scope="col" class="bg-dark text-white">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <tr>                                       
+                                        <th scope="col">22-7-2024 </th>
+                                        <td scope="col">Electricity </td>
+                                        <td scope="col">{{householdElectricityBill}} </td>
+                                    </tr>
+                                    <tr>                                       
+                                        <th scope="col"></th>
+                                        <td scope="col">Water</td>
+                                        <td scope="col">{{householdWaterBill}} </td>
+                                    </tr>
+                                    <tr>                                       
+                                        <th scope="col"></th>
+                                        <td scope="col">Refuse</td>
+                                        <td scope="col"> {{householdRefuseBill}} </td>
+                                    </tr>
+                                    <tr>                                       
+                                        <th scope="col"></th>
+                                        <td scope="col">Total</td>
+                                        <td scope="col"> {{householdTotalBill}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-5 text-end">
+                            <table class="table table-striped table-info table-hover text-start">
+                                
+                                <thead>
+                                    <tr class="">
+                                        <th scope="col" class="bg-dark text-white">Date</th>
+                                        <th scope="col" class="bg-dark text-white">Item</th>
+                                        <th scope="col" class="bg-dark text-white">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    {% for household in householdAppliance  %}
+                                    <tr>
+                                        <th scope="col">22-7-2024 </th>
+                                        <td scope="col">{{ household.appliance.name }} </td>
+                                        <td scope="col">{{ household.quantity }} </td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <th scope="col">22-7-2024 </th>
+                                        <td scope="col">Number of People </td>
+                                        <td scope="col">{{ currentMonthNumberOfPeople.numberOfIndividuals }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-2">
+                            <div class=" text-end border border-primary" style="height:max-content">
+                                <img src="" alt="" class="bg-warning" style="width: 98%; height:98%;">
+                            </div>
+                            <div class=" text-end border border-primary mt-2 p-2" style="height:max-content">
+                                
+                                <p>Amount Due: {{ household.credit }} </p>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+{% endblock content %}

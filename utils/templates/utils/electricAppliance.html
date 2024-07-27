@@ -40,7 +40,7 @@
                             {% for appliance in appliances  %}
                             <tr>
                                 <th scope="col">{{ forloop.counter }} </th>
-                                <td scope="col">{{ appliance.date }} </td>
+                                <td scope="col">{{ appliance.entryDate }} </td>
                                 <td scope="col">{{ appliance.name }} </td>
                                 <td scope="col">{{ appliance.power }}W</td>
                                 <td scope="col"><a href="{% url "editAppliance" appliance.id %}">Edit</a></td>

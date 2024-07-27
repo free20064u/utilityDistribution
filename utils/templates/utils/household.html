@@ -43,7 +43,10 @@
                                 <td scope="col">{{ household.date }} </td>
                                 <td scope="col">{{ household.name }} </td>
                                 <td scope="col">{{ household.contact }}</td>
-                                <td scope="col"><a href="{% url "editHousehold" household.id %}">Edit</a></td>
+                                <td scope="col">
+                                    <a href="{% url "profile" household.id %}">View</a>
+                                    <a href="{% url "editHousehold" household.id %}">Edit</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
