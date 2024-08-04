@@ -7,10 +7,10 @@ from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividu
 
 class PaymentForm(ModelForm):
     amount = forms.DecimalField(label='Amount', widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    user = forms.ModelChoiceField(label='', queryset=Household.objects.all(), widget=forms.HiddenInput())
+    household = forms.ModelChoiceField(label='', queryset=Household.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = Payment
-        fields = ['amount', 'user']
+        fields = ['amount', 'household']
 
 
 class ApplianceForm(ModelForm):

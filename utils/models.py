@@ -9,7 +9,7 @@ class Household(models.Model):
     contact = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     entryDate = models.DateField(auto_now_add=True)
-    credit = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    
 
     def __str__(self):
         return self.name
@@ -33,6 +33,21 @@ class NumberOfIndividuals(models.Model):
         return totalMembers
 
 
+class Debt(models.Model):
+    totalDept = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    entryDate = models.DateField(auto_now_add=True)
+    dateOnBill = models.DateField()
+    household = models.ForeignKey(Household, on_delete=models.PROTECT)
+
+    def householdTotalDebt(self, household_id=None):
+        total = 0
+        debts = Debt.objects.filter(household_id=household_id)
+        for debt in debts:
+            total += debt.totalDept
+
+        return total
+
+    
 class Payment(models.Model):
     entryDate = models.DateTimeField(auto_now_add=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -40,6 +55,14 @@ class Payment(models.Model):
 
     def __str__(self):
         return (f'{self.household} --- {self.amount}')
+    
+    def householdTotalPayment(self, household_id=None):
+        total = 0
+        payments = Payment.objects.filter(household_id=household_id)
+        for payment in payments:
+            total += payment.amount
+
+        return total
 
 
 class MonthlyBill(models.Model):

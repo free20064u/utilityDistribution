@@ -2,19 +2,37 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.forms import formset_factory, modelformset_factory
+from django.forms import formset_factory
 
 from datetime import datetime
 
 from accounts.forms import UserLoginForm
 from .forms import MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, NumberOfIndividualsForm, HouseholdApplianceForm
-from .models import MonthlyBill, Household, Appliance, NumberOfIndividuals, Payment,HouseholdAppliance
+from .models import MonthlyBill, Household, Appliance, NumberOfIndividuals, Payment, HouseholdAppliance, Debt
+
+from .signals import checkHouseholdparameters
 
 now = datetime.now()
 month = now.month
 year = now.year
 
 # # Create your views here.
+def editNoOfPeopleView(request, id=None):
+    noOfPeople = NumberOfIndividuals.objects.get(entryDate__month=month, entryDate__year=year, household=Household.objects.get(id=id))
+    
+    if request.method == 'POST':
+        form = NumberOfIndividualsForm(request.POST, instance=noOfPeople)
+        if form.is_valid():
+            form.save()
+            return redirect('household')
+    else:
+        form = NumberOfIndividualsForm(instance=noOfPeople)
+        context = {
+            'form': form,
+        }
+        return render(request, 'utils/addPeople.html',context)
+    
+
 def addPeopleView(request, id=None):
     household = Household.objects.get(id=id)
     form = NumberOfIndividualsForm(initial={'household':Household.objects.get(id=id)})
@@ -24,9 +42,6 @@ def addPeopleView(request, id=None):
     }
     if request.method == 'POST':
         form = NumberOfIndividualsForm(request.POST)
-
-
-        print(form)
         if form.is_valid():
             form.save()
             messages.success(request, 'Number of people for this household for this month is added')
@@ -39,14 +54,21 @@ def addPeopleView(request, id=None):
 
 
 def payBillView(request, id=None):
-    form = PaymentForm(initial={'user':Household.objects.get(id=id)})
+
+    form = PaymentForm(initial={'household':Household.objects.get(id=id)})
+    payments = Payment.objects.filter(household_id=id)
     context = {
         'form': form,
+        'payments': payments,
+        
     }
+    
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
-            form.save()
+            pay = form.save(commit=False)
+            pay.household = Household.objects.get(id=id)
+            pay.save()
             messages.success(request, 'Bill Paid')
             return redirect('household')
         else:
@@ -88,50 +110,57 @@ def addHouseholdApplianceView(request, id=None):
         return render(request, 'utils/addHouseholdAppliance.html', context)
     
 
-def profileView(request, id=None):
-    if request.method == 'POST':
-        pass
-
+def profileView(request, id=None, month=None, year=None):
     household = Household.objects.get(id=id)
-    households = Household.objects.all()
     payments = Payment.objects.filter(household_id=id)
-    monthlyBills = MonthlyBill.objects.all().order_by('-dateOnBill')
-    
-    # Household appliance for the current month
-    householdAppliance = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year, household_id=id)
+    currentNumberOfPeople=None
+    householdAppliance=[]
+    householdTotalBill=0
+    householdWaterBill=0
+    householdElectricityBill=0
+    householdRefuseBill=0
 
-    # Total power consumed by household
-    householdPowerConsumed = 0
-    for appliance in householdAppliance:
-        householdPowerConsumed += appliance.totalPower()
+    if (checkHouseholdparameters(dateOnBill=now,household_id=id, user_id=request.user.id)):
+        
+        # Household appliance for the current month
+        householdAppliance = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year, household_id=id)
+
+        # Total power consumed by household
+        householdPowerConsumed = 0
+        for appliance in householdAppliance:
+            householdPowerConsumed += appliance.totalPower()
 
 
-    # All appliances by all the household
-    householdsappliances = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year)
+        # All appliances by all the household
+        householdsappliances = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year)
 
-    # Total power consumed by all the appliances in all the household
-    householdAppliancesPowerConsumed = 0
-    for householdAppliances in householdsappliances:
-        householdAppliancesPowerConsumed += householdAppliances.totalPower()
+        # Total power consumed by all the appliances in all the household
+        householdAppliancesPowerConsumed = 0
+        for householdAppliances in householdsappliances:
+            householdAppliancesPowerConsumed += householdAppliances.totalPower()
 
-    # Select the current month number of people for household
-    currentNumberOfPeople = NumberOfIndividuals.objects.get(dateOnBill__month=now.month, household_id=id)
+        # Select the current month number of people for household
+        currentNumberOfPeople = NumberOfIndividuals.objects.get(dateOnBill__month=now.month, household_id=id)
 
-    # Get the total number of people in all the household for the current month
-    totalNumberOfPeople = NumberOfIndividuals.totalNumberOfPeopel(NumberOfIndividuals,month=now.month, year=now.year)
-    
-    # Get current bill of the month
-    currentmonthlyBills = MonthlyBill.objects.get(dateOnBill__month=now.month, dateOnBill__year=now.year, user_id=request.user.id)
+        # Get the total number of people in all the household for the current month
+        totalNumberOfPeople = NumberOfIndividuals.totalNumberOfPeopel(NumberOfIndividuals,month=now.month, year=now.year)
+        
+        # Get current bill of the month
+        currentmonthlyBills = MonthlyBill.objects.get(dateOnBill__month=now.month, dateOnBill__year=now.year, user_id=request.user.id)
 
-    # Current household water bill.
-    householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
-    # Current household refuse bill
-    householdRefuseBill = currentmonthlyBills.refuseBill/households.count()
-    # Current household electricity bill
-    householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
-    
-    # Household total bill for the month
-    householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill
+        # Current household water bill.
+        householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
+        # Current household refuse bill
+        householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
+        # Current household electricity bill
+        householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
+        
+        # Household total bill for the month
+        householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill
+
+        totalDebt = Debt.householdTotalDebt(Debt, household_id=id)
+        totalPayment = Payment.householdTotalPayment(Payment, household_id=id )
+        amountDue = totalDebt - totalPayment
 
     context = {
         'household': household,
@@ -139,10 +168,10 @@ def profileView(request, id=None):
         'currentMonthNumberOfPeople': currentNumberOfPeople,
         'householdAppliance': householdAppliance,
         'householdTotalBill': ("{:0.2f}".format(householdTotalBill)),
-        'monthlyBills':monthlyBills,
-        'householdWaterBill': householdWaterBill,
-        'householdRefuseBill': householdRefuseBill,
+        'householdWaterBill': ("{:0.2f}".format(householdWaterBill)),
+        'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
         'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
+        'amountDue': ("{:0.2f}".format(amountDue)),
     }
     return render(request, 'utils/profile.html', context)
 
@@ -241,7 +270,7 @@ def householdView(request):
 
 def editBillView(request, id=None):
     oldBill = MonthlyBill.objects.get(id=id)
-    form = MonthlyBillForm(instance=oldBill, initial={'dustbinBill':oldBill.dustbinBill, 'electricBill':oldBill.electricBill, 'waterBill':oldBill.waterBill, 'user':request.user})
+    form = MonthlyBillForm(instance=oldBill, initial={'dustbinBill':oldBill.refuseBill, 'electricBill':oldBill.electricityBill, 'waterBill':oldBill.waterBill, 'user':request.user})
     context = {
         'form': form,
     }
