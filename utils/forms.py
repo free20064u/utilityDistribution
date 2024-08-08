@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 
 from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance
 
+choices = [(bill.dateOnBill, bill.dateOnBill) for bill  in MonthlyBill.objects.all()]
+
+class SearchForm(forms.Form):
+    dateOnBill = forms.ChoiceField(label='', widget=forms.Select(), choices=choices)
+
 
 class PaymentForm(ModelForm):
     amount = forms.DecimalField(label='Amount', widget=forms.NumberInput(attrs={'class': 'form-control'}))
