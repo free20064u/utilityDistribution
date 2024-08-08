@@ -14,7 +14,8 @@
         <div class="col-12 col-md-9 mt-2">
             <div class="row">
                 <div class="col-9">
-                    <form class="d-flex">
+                    <form class="d-flex" method="post">
+                        {% csrf_token %}
                         <input class="form-control" type="search"name="dateOnBill" placeholder="search by date. {dd-mm-yyyy}">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
@@ -37,7 +38,7 @@
                                 </thead>
                                 <tbody >
                                     <tr>                                       
-                                        <th scope="col">22-7-2024 </th>
+                                        <th scope="col">{{currentMonthNumberOfPeople.entryDate|date:'d-m-Y'}} </th>
                                         <td scope="col">Electricity </td>
                                         <td scope="col">{{householdElectricityBill}} </td>
                                     </tr>
@@ -64,21 +65,21 @@
                                 
                                 <thead>
                                     <tr class="">
-                                        <th scope="col" class="bg-dark text-white">Date</th>
-                                        <th scope="col" class="bg-dark text-white">Item</th>
-                                        <th scope="col" class="bg-dark text-white">Quantity</th>
+                                        <th scope="col-2" class="bg-dark text-white">Date</th>
+                                        <th scope="col-2" class="bg-dark text-white">Item</th>
+                                        <th scope="col-1" class="bg-dark text-white">Quantity</th>
                                     </tr>
                                 </thead>
                                 <tbody >
                                     {% for household in householdAppliance  %}
                                     <tr>
-                                        <th scope="col">22-7-2024 </th>
-                                        <td scope="col">{{ household.appliance.name }} </td>
-                                        <td scope="col">{{ household.quantity }} </td>
+                                        <th scope="col-2">{{household.entryDate|date:'d-m-Y' }} </th>
+                                        <td scope="col-2">{{ household.appliance.name }} </td>
+                                        <td scope="col-1">{{ household.quantity }} </td>
                                     </tr>
                                     {% endfor %}
                                     <tr>
-                                        <th scope="col">22-7-2024 </th>
+                                        <th scope="col">{{ currentMonthNumberOfPeople.entryDate|date:'d-m-Y'}} </th>
                                         <td scope="col">Number of People </td>
                                         <td scope="col">{{ currentMonthNumberOfPeople.numberOfIndividuals }} </td>
                                     </tr>

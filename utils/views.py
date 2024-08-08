@@ -13,12 +13,11 @@ from .models import MonthlyBill, Household, Appliance, NumberOfIndividuals, Paym
 from .signals import checkHouseholdparameters
 
 now = datetime.now()
-month = now.month
-year = now.year
+
 
 # # Create your views here.
 def editNoOfPeopleView(request, id=None):
-    noOfPeople = NumberOfIndividuals.objects.get(entryDate__month=month, entryDate__year=year, household=Household.objects.get(id=id))
+    noOfPeople = NumberOfIndividuals.objects.get(entryDate__month=now.month, entryDate__year=now.year, household=Household.objects.get(id=id))
     
     if request.method == 'POST':
         form = NumberOfIndividualsForm(request.POST, instance=noOfPeople)
@@ -110,7 +109,7 @@ def addHouseholdApplianceView(request, id=None):
         return render(request, 'utils/addHouseholdAppliance.html', context)
     
 
-def profileView(request, id=None, month=None, year=None):
+def profileView(request, id=None):
     household = Household.objects.get(id=id)
     payments = Payment.objects.filter(household_id=id)
     currentNumberOfPeople=None
@@ -119,61 +118,146 @@ def profileView(request, id=None, month=None, year=None):
     householdWaterBill=0
     householdElectricityBill=0
     householdRefuseBill=0
+    amountDue=0
+    
+    if request.method == 'POST':
+        billDate = request.POST['dateOnBill']
+        dateformate ='%d-%m-%Y'
+        now = datetime.strptime(billDate,dateformate)
+    else:
+        now = datetime.now()
+
 
     if (checkHouseholdparameters(dateOnBill=now,household_id=id, user_id=request.user.id)):
-        
-        # Household appliance for the current month
-        householdAppliance = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year, household_id=id)
-
-        # Total power consumed by household
-        householdPowerConsumed = 0
-        for appliance in householdAppliance:
-            householdPowerConsumed += appliance.totalPower()
 
 
-        # All appliances by all the household
-        householdsappliances = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year)
+        if request.method == "POST":
+            billDate = request.POST['dateOnBill']
+            dateformate ='%d-%m-%Y'
+            billDate = datetime.strptime(billDate,dateformate)
+            print(billDate.month)
+            print(billDate.year)
+            # Household appliance for the current month
+            householdAppliance = HouseholdAppliance.objects.filter(dateOnBill__month=billDate.month, dateOnBill__year=billDate.year, household_id=id)
 
-        # Total power consumed by all the appliances in all the household
-        householdAppliancesPowerConsumed = 0
-        for householdAppliances in householdsappliances:
-            householdAppliancesPowerConsumed += householdAppliances.totalPower()
+            # Total power consumed by household
+            householdPowerConsumed = 0
+            for appliance in householdAppliance:
+                householdPowerConsumed += appliance.totalPower()
 
-        # Select the current month number of people for household
-        currentNumberOfPeople = NumberOfIndividuals.objects.get(dateOnBill__month=now.month, household_id=id)
 
-        # Get the total number of people in all the household for the current month
-        totalNumberOfPeople = NumberOfIndividuals.totalNumberOfPeopel(NumberOfIndividuals,month=now.month, year=now.year)
-        
-        # Get current bill of the month
-        currentmonthlyBills = MonthlyBill.objects.get(dateOnBill__month=now.month, dateOnBill__year=now.year, user_id=request.user.id)
+            # All appliances by all the household
+            householdsappliances = HouseholdAppliance.objects.filter(dateOnBill__month=billDate.month, dateOnBill__year=billDate.year)
 
-        # Current household water bill.
-        householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
-        # Current household refuse bill
-        householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
-        # Current household electricity bill
-        householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
-        
-        # Household total bill for the month
-        householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill
+            # Total power consumed by all the appliances in all the household
+            householdAppliancesPowerConsumed = 0
+            for householdAppliances in householdsappliances:
+                householdAppliancesPowerConsumed += householdAppliances.totalPower()
 
-        totalDebt = Debt.householdTotalDebt(Debt, household_id=id)
-        totalPayment = Payment.householdTotalPayment(Payment, household_id=id )
-        amountDue = totalDebt - totalPayment
+            # Select the current month number of people for household
+            currentNumberOfPeople = NumberOfIndividuals.objects.get(dateOnBill__month=billDate.month, household_id=id)
 
-    context = {
-        'household': household,
-        'payments': payments,
-        'currentMonthNumberOfPeople': currentNumberOfPeople,
-        'householdAppliance': householdAppliance,
-        'householdTotalBill': ("{:0.2f}".format(householdTotalBill)),
-        'householdWaterBill': ("{:0.2f}".format(householdWaterBill)),
-        'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
-        'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
-        'amountDue': ("{:0.2f}".format(amountDue)),
-    }
-    return render(request, 'utils/profile.html', context)
+            # Get the total number of people in all the household for the current month
+            totalNumberOfPeople = NumberOfIndividuals.totalNumberOfPeopel(NumberOfIndividuals,month=billDate.month, year=billDate.year)
+            
+            # Get current bill of the month
+            currentmonthlyBills = MonthlyBill.objects.get(dateOnBill__month=billDate.month, dateOnBill__year=billDate.year, user_id=request.user.id)
+
+            # Current household water bill.
+            householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
+            # Current household refuse bill
+            householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
+            # Current household electricity bill
+            householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
+            
+            # Household total bill for the month
+            householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill
+
+            totalDebt = Debt.householdTotalDebt(Debt, household_id=id)
+            totalPayment = Payment.householdTotalPayment(Payment, household_id=id )
+            amountDue = totalDebt - totalPayment
+            context = {
+                'household': household,
+                'payments': payments,
+                'currentMonthNumberOfPeople': currentNumberOfPeople,
+                'householdAppliance': householdAppliance,
+                'householdTotalBill': ("{:0.2f}".format(householdTotalBill)),
+                'householdWaterBill': ("{:0.2f}".format(householdWaterBill)),
+                'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
+                'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
+                'amountDue': ("{:0.2f}".format(amountDue)),
+            }
+
+            return render(request, 'utils/profile.html', context)
+
+        else: 
+
+            
+            # Household appliance for the current month
+            householdAppliance = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year, household_id=id)
+
+            # Total power consumed by household
+            householdPowerConsumed = 0
+            for appliance in householdAppliance:
+                householdPowerConsumed += appliance.totalPower()
+
+
+            # All appliances by all the household
+            householdsappliances = HouseholdAppliance.objects.filter(dateOnBill__month=now.month, dateOnBill__year=now.year)
+
+            # Total power consumed by all the appliances in all the household
+            householdAppliancesPowerConsumed = 0
+            for householdAppliances in householdsappliances:
+                householdAppliancesPowerConsumed += householdAppliances.totalPower()
+
+            # Select the current month number of people for household
+            currentNumberOfPeople = NumberOfIndividuals.objects.get(dateOnBill__month=now.month, household_id=id)
+
+            # Get the total number of people in all the household for the current month
+            totalNumberOfPeople = NumberOfIndividuals.totalNumberOfPeopel(NumberOfIndividuals,month=now.month, year=now.year)
+            
+            # Get current bill of the month
+            currentmonthlyBills = MonthlyBill.objects.get(dateOnBill__month=now.month, dateOnBill__year=now.year, user_id=request.user.id)
+
+            # Current household water bill.
+            householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
+            # Current household refuse bill
+            householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
+            # Current household electricity bill
+            householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
+            
+            # Household total bill for the month
+            householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill
+
+            totalDebt = Debt.householdTotalDebt(Debt, household_id=id)
+            totalPayment = Payment.householdTotalPayment(Payment, household_id=id )
+            amountDue = totalDebt - totalPayment
+
+            context = {
+                'household': household,
+                'payments': payments,
+                'currentMonthNumberOfPeople': currentNumberOfPeople,
+                'householdAppliance': householdAppliance,
+                'householdTotalBill': ("{:0.2f}".format(householdTotalBill)),
+                'householdWaterBill': ("{:0.2f}".format(householdWaterBill)),
+                'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
+                'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
+                'amountDue': ("{:0.2f}".format(amountDue)),
+            }
+            return render(request, 'utils/profile.html', context)
+    else:
+        context = {
+            'household': household,
+            'payments': payments,
+            'currentMonthNumberOfPeople': currentNumberOfPeople,
+            'householdAppliance': householdAppliance,
+            'householdTotalBill': ("{:0.2f}".format(householdTotalBill)),
+            'householdWaterBill': ("{:0.2f}".format(householdWaterBill)),
+            'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
+            'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
+            'amountDue': ("{:0.2f}".format(amountDue)),
+            }
+        return render(request, 'utils/profile.html', context)
 
 
 def editApplianceView(request, id=None):
