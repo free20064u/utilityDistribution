@@ -7,7 +7,7 @@ from django.forms import formset_factory
 from datetime import datetime
 
 from accounts.forms import UserLoginForm
-from .forms import MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm
+from .forms import MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, NumberOfIndividualsForm, HouseholdApplianceForm
 from .models import MonthlyBill, Household, Appliance, NumberOfIndividuals, Payment, HouseholdAppliance, Debt
 
 from .signals import checkHouseholdparameters
@@ -119,7 +119,6 @@ def profileView(request, id=None):
     householdElectricityBill=0
     householdRefuseBill=0
     amountDue=0
-    form = SearchForm()
     
     if request.method == 'POST':
         billDate = request.POST['dateOnBill']
@@ -187,7 +186,6 @@ def profileView(request, id=None):
                 'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
                 'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
                 'amountDue': ("{:0.2f}".format(amountDue)),
-                'form': form,
             }
 
             return render(request, 'utils/profile.html', context)
@@ -245,7 +243,6 @@ def profileView(request, id=None):
                 'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
                 'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
                 'amountDue': ("{:0.2f}".format(amountDue)),
-                'form': form,
             }
             return render(request, 'utils/profile.html', context)
     else:
@@ -259,7 +256,6 @@ def profileView(request, id=None):
             'householdRefuseBill': ("{:0.2f}".format(householdRefuseBill)),
             'householdElectricityBill': ("{:0.2f}".format(householdElectricityBill)),
             'amountDue': ("{:0.2f}".format(amountDue)),
-            'form': form,
             }
         return render(request, 'utils/profile.html', context)
 
