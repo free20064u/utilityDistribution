@@ -1,10 +1,10 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, modelform_factory
 from django.contrib.auth.models import User
 
 from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance
 
-choices = [(bill.dateOnBill.strftime('%d-%m-%Y'), bill.dateOnBill.strftime('%d-%m-%Y')) for bill  in MonthlyBill.objects.all()]
+choices = [(bill.dateOnBill.strftime('%d-%m-%Y'), bill.dateOnBill) for bill  in MonthlyBill.objects.all()]
 
 class SearchForm(forms.Form):
     dateOnBill = forms.ChoiceField(label='', widget=forms.Select(attrs={'class':'form-control px-5'}), choices=choices)
