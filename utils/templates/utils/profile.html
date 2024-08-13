@@ -38,7 +38,7 @@
                                 </thead>
                                 <tbody >
                                     <tr>                                       
-                                        <th scope="col">{{currentMonthNumberOfPeople.entryDate|date:'d-m-Y'}} </th>
+                                        <th scope="col">{{currentMonthNumberOfPeople.dateOnBill|date:'d-m-Y'}} </th>
                                         <td scope="col">Electricity </td>
                                         <td scope="col">{{householdElectricityBill}} </td>
                                     </tr>
@@ -54,8 +54,8 @@
                                     </tr>
                                     <tr>                                       
                                         <th scope="col"></th>
-                                        <td scope="col">Total</td>
-                                        <td scope="col"> {{householdTotalBill}} </td>
+                                        <td scope="col"><b>Total</b></td>
+                                        <td scope="col"> <b>{{householdTotalBill}}</b> </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -73,13 +73,13 @@
                                 <tbody >
                                     {% for household in householdAppliance  %}
                                     <tr>
-                                        <th scope="col-2">{{household.entryDate|date:'d-m-Y' }} </th>
+                                        <th scope="col-2">{{household.dateOnBill|date:'d-m-Y' }} </th>
                                         <td scope="col-2">{{ household.appliance.name }} </td>
                                         <td scope="col-1">{{ household.quantity }} </td>
                                     </tr>
                                     {% endfor %}
                                     <tr>
-                                        <th scope="col">{{ currentMonthNumberOfPeople.entryDate|date:'d-m-Y'}} </th>
+                                        <th scope="col">{{ currentMonthNumberOfPeople.dateOnBill|date:'d-m-Y'}} </th>
                                         <td scope="col">Number of People </td>
                                         <td scope="col">{{ currentMonthNumberOfPeople.numberOfIndividuals }} </td>
                                     </tr>

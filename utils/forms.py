@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 
 from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance
 
-choices = [(bill.dateOnBill.strftime('%d-%m-%Y'), bill.dateOnBill.strftime('%d-%m-%Y')) for bill  in MonthlyBill.objects.all()]
+choices = [(bill.dateOnBill.strftime('%d-%m-%Y'), bill.dateOnBill.strftime('%d-%m-%Y')) for bill  in MonthlyBill.objects.all().order_by('-dateOnBill')]
+
 
 class SearchForm(forms.Form):
     dateOnBill = forms.ChoiceField(label='', widget=forms.Select(attrs={'class':'form-control px-5'}), choices=choices)

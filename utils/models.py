@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class Household(models.Model):
     name = models.CharField(max_length=200)
     contact = models.CharField(max_length=20)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     entryDate = models.DateField(auto_now_add=True)
     
 
@@ -19,7 +19,7 @@ class NumberOfIndividuals(models.Model):
     numberOfIndividuals = models.IntegerField()
     entryDate = models.DateField(auto_now_add=True)
     dateOnBill = models.DateField()
-    household = models.ForeignKey(Household, on_delete=models.PROTECT)
+    household = models.ForeignKey(Household, on_delete=models.CASCADE)
 
     def __str__(self):
         return (f'{self.household} -- {self.numberOfIndividuals}')
@@ -37,7 +37,7 @@ class Debt(models.Model):
     totalDept = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     entryDate = models.DateField(auto_now_add=True)
     dateOnBill = models.DateField()
-    household = models.ForeignKey(Household, on_delete=models.PROTECT)
+    household = models.ForeignKey(Household, on_delete=models.CASCADE)
 
     def householdTotalDebt(self, household_id=None):
         total = 0
@@ -51,7 +51,7 @@ class Debt(models.Model):
 class Payment(models.Model):
     entryDate = models.DateTimeField(auto_now_add=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    household = models.ForeignKey(Household, on_delete=models.PROTECT)
+    household = models.ForeignKey(Household, on_delete=models.CASCADE)
 
     def __str__(self):
         return (f'{self.household} --- {self.amount}')
@@ -71,7 +71,7 @@ class MonthlyBill(models.Model):
     refuseBill = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
     electricityBill = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
     waterBill = models.DecimalField(decimal_places=2, max_digits=10, default=0.00)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     def totalBill(self):
@@ -86,7 +86,7 @@ class Appliance(models.Model):
     entryDate = models.DateField(auto_now_add=True)
     name = models.CharField(max_length=100)
     power = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return (f'{self.name} -- {self.power}W')
@@ -96,8 +96,8 @@ class HouseholdAppliance(models.Model):
     entryDate = models.DateField(auto_now_add=True)
     dateOnBill = models.DateField()
     quantity = models.IntegerField(default=0)
-    household = models.ForeignKey(Household, on_delete=models.PROTECT)
-    appliance = models.ForeignKey(Appliance, on_delete=models.PROTECT)
+    household = models.ForeignKey(Household, on_delete=models.CASCADE)
+    appliance = models.ForeignKey(Appliance, on_delete=models.CASCADE)
 
     def __str__(self):
         return (f'{self.household} -- {self.appliance}')

@@ -89,18 +89,28 @@ def updateBill(dateOnBill=None, household_id=None, user_id=None):
 
     print(householdTotalBill, householdWaterBill , householdRefuseBill , householdElectricityBill)
 
+    #dept = Debt.objects.filter(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household=Household.objects.get(id=household_id))
+    #if dept != None:
+    #     Debt.objects.create(dateOnBill=dateOnBill, household=Household.objects.get(id=household_id),totalDept=householdTotalBill)
+    # else:
+    #     Debt.objects.update(totalDept=householdTotalBill)
 
-    Debt.objects.filter(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household=Household.objects.get(id=household_id)).update(totalDept=householdTotalBill)
+    object, created = Debt.objects.get_or_create(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household=Household.objects.get(id=household_id), defaults={'dateOnBill':dateOnBill, 'household_id':household_id, 'totalDept':householdTotalBill})
+
+    if not created:
+        object.totalDept=householdTotalBill
+        object.save()
 
 
 @receiver(post_save, sender=NumberOfIndividuals)
 def my_handler(sender, instance, **kwargs):
-    print(instance.dateOnBill, instance.household.user.id)
+    print(1)
 
     if (checkparameters(dateOnBill=instance.dateOnBill,user_id=instance.household.user.id)):
+        print(2)
         for household in Household.objects.all():
             updateBill(dateOnBill=instance.dateOnBill, household_id=household.id, user_id=instance.household.user.id)
-
+        print(3)
 
 @receiver(post_save, sender=MonthlyBill)
 def my_handler(sender, instance, **kwargs):

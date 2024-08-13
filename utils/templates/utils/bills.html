@@ -33,7 +33,7 @@
                         <td scope="col">{{ bill.electricityBill }}</td>
                         <td scope="col">{{ bill.waterBill }}</td>
                         <td scope="col">{{ bill.totalBill }}</td>
-                        <td scope="col">{{ bill.billOnDate }}</td>
+                        <td scope="col">{{ bill.dateOnBill }}</td>
                         <td scope="col"><a href="{% url "editBill" bill.id %}">Edit</a></td>
                     </tr>
                     {% endfor %}

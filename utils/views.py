@@ -39,6 +39,7 @@ def addPeopleView(request, id=None):
         'form': form,
         'household': household,
     }
+    
     if request.method == 'POST':
         form = NumberOfIndividualsForm(request.POST)
         if form.is_valid():
