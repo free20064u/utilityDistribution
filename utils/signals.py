@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
+from decimal import Decimal
 
 from .models import Household, Payment, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt
 
@@ -47,6 +47,12 @@ def checkHouseholdparameters(dateOnBill=None,household_id=None, user_id=None):
 
 
 def updateBill(dateOnBill=None, household_id=None, user_id=None):
+
+    householdTotalBill=Decimal(0)
+    householdWaterBill=Decimal(0)
+    householdElectricityBill=Decimal(0)
+    householdRefuseBill=Decimal(0)
+   
     
     # Household appliance for the current month
     householdAppliance = HouseholdAppliance.objects.filter(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household_id=household_id)
@@ -76,13 +82,15 @@ def updateBill(dateOnBill=None, household_id=None, user_id=None):
 
 
     # Current household water bill.
-    householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
-
+    if currentmonthlyBills.waterBill != Decimal(0):
+        householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
     # Current household refuse bill
-    householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
+    if currentmonthlyBills.refuseBill != Decimal(0.00):
+        householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
 
     # Current household electricity bill
-    householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
+    if currentmonthlyBills.electricityBill != Decimal(0.00):
+        householdElectricityBill = householdPowerConsumed * currentmonthlyBills.electricityBill / householdAppliancesPowerConsumed
     
     # Household total bill for the month
     householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill

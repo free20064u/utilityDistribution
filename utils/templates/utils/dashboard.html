@@ -14,20 +14,86 @@
             <div class="row d-flex justify-content-between">
                 <div class="col-md-3 bg-secondary border mx-2 my-1 m-md-0 rounded text-dark text-center">
                     <p>Dustbin</p>
-                    <p>GHC 200</p>
+                    <p>GHC {{ totalRefuseBill }} </p>
                 </div>
                 <div class="col-md-3 bg-warning border mx-2 my-1 m-md-0 rounded text-dark text-center">
                     <p>Electricity</p>
-                    <p>GHC 200</p>
+                    <p>GHC {{ totalElectricityBill }} </p>
                 </div>
                 <div class="col-md-3 bg-success border mx-2 my-1 m-md-0 rounded text-dark text-center">
                     <p>Water</p>
-                    <p>GHC 200</p>
+                    <p>GHC {{ totalWaterBill }} </p>
                 </div>
             </div>
             <div class="row bg-primary-subtle my-2">
+                <p id="waterbill" class="d-none" >{{waterBillList}}</p>
+                <p id="refusebill" class="d-none">{{refuseBillList}}</p>
+                <p id="electricitybill" class="d-none">{{ electricityBillList }}</p>
+                <p id="dateOnBill" class="d-none">{{ dateOnBillList }}</p>
+
                 <div class="boarder" style="height:100px width: 200px;">
-                    <h2 class="py-5">graph</h2>
+                    <div>
+                        <canvas id="myChart"></canvas>
+                      </div>
+                      
+                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                      
+                      <script>
+                        const ctx = document.getElementById('myChart');
+                        const dateOnBill = document.getElementById('dateOnBill').innerHTML
+                        const waterBill = document.getElementById('waterbill').innerHTML
+                        const refuseBill = document.getElementById('refusebill').innerHTML
+                        const electricityBill = document.getElementById('electricitybill').innerHTML
+
+                        const waterBillList = (waterBill.trim().split(' '));
+                        const refuseBillList =(refuseBill.trim().split(' '));
+                        const electricityBillList = (electricityBill.trim().split(' '));
+                        const dateOnBillList = (dateOnBill.trim().split(' '));
+
+                        const waterBillItems = [];
+                        const refuseBillItems = [];
+                        const electricityBillItems = []
+                        const dateOnBillItems = []
+
+                        for(i=0; i < waterBillList.length; i++){
+                            waterBillItems.push(parseInt(waterBillList[i]));
+                            refuseBillItems.push(parseInt(refuseBillList[i]));
+                            electricityBillItems.push(parseInt(electricityBillList[i]));
+                            dateOnBillItems.push(dateOnBillList[i]);
+                        }                     
+                      
+                        new Chart(ctx, {
+                          type: 'line',
+                          data: {
+                            labels: dateOnBillItems,
+                            datasets: [
+                            {
+                              label: 'water bill',
+                              data: waterBillItems,
+                              borderWidth: 1
+                            },
+                            {
+                                label: 'electrictiy bill',
+                                data: electricityBillItems,
+                                borderWidth: 1
+                            },
+                            {
+                                  label: 'refusebill',
+                                  data: refuseBillItems,
+                                  borderWidth: 1
+                            }
+                            ]
+                          },
+                          options: {
+                            scales: {
+                              y: {
+                                beginAtZero: true
+                              }
+                            }
+                          }
+                        })
+                      </script>
+                      
                 </div>
             </div>
         </div>
