@@ -1,9 +1,17 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.contrib.auth.models import User
 from decimal import Decimal
 
-from .models import Household, Payment, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt
+from .models import Household, Payment, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt, UserProfile
+
+
+@receiver(post_save, sender=User)
+def createProfile(sender, instance, created, **kwarg):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+
 
 def checkparameters(dateOnBill=None, user_id=None):
     households = Household.objects.all()

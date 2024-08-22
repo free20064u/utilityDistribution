@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
-from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance
+from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance, UserProfile
 
 
 
@@ -11,6 +11,14 @@ class SearchForm(forms.Form):
     choices = [(bill.dateOnBill.strftime('%d-%m-%Y'), bill.dateOnBill.strftime('%d-%m-%Y')) for bill  in MonthlyBill.objects.all().order_by('-dateOnBill')]
     
     dateOnBill = forms.ChoiceField(label='', widget=forms.Select(attrs={'class':'form-control px-5'}), choices=choices)
+
+
+class UserProfileForm(ModelForm):
+    image = forms.ImageField()
+
+    class Meta:
+        model = UserProfile
+        fields = ['image', 'user']
 
 
 class PaymentForm(ModelForm):

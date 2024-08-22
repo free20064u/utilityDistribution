@@ -7,6 +7,8 @@ class UserProfile(models.Model):
     image = models.ImageField(default='userImage/defaultImage.jpg', upload_to='userImage')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    
+
 class Household(models.Model):
     name = models.CharField(max_length=200)
     contact = models.CharField(max_length=20)

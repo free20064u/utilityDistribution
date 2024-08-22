@@ -1,3 +1,4 @@
+<!--Form for registering user of the web app-->
 {% extends "base/base.html" %}
 {% block pageTitle %} Home{% endblock pageTitle %}Home
 
@@ -20,6 +21,8 @@
                     {{ form.password }}
                     {{ form.password_confirm.label_tag }}
                     {{ form.password_confirm }}
+                    <!--{{ form.image.label_tag }}
+                    {{ form.image }}-->
                     <div class="row">
                         <div class="col-12">
                             <button class="btn btn-primary my-4 col-12">Submit</button>

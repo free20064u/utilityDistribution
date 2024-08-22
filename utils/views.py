@@ -1,15 +1,19 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.forms import formset_factory
 
 from datetime import datetime
 from decimal import Decimal
 
 from accounts.forms import UserLoginForm
-from .forms import MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm
-from .models import MonthlyBill, Household, Appliance, NumberOfIndividuals, Payment, HouseholdAppliance, Debt
+from .forms import (MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, 
+                    NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm, 
+                    UserProfileForm)
+
+from .models import (MonthlyBill, Household, Appliance, NumberOfIndividuals, 
+                     Payment, HouseholdAppliance, Debt)
 
 from .signals import checkHouseholdparameters
 
@@ -382,7 +386,9 @@ def householdView(request):
 
 def editBillView(request, id=None):
     oldBill = MonthlyBill.objects.get(id=id)
-    form = MonthlyBillForm(instance=oldBill, initial={'dustbinBill':oldBill.refuseBill, 'electricBill':oldBill.electricityBill, 'waterBill':oldBill.waterBill, 'user':request.user})
+    form = MonthlyBillForm(instance=oldBill, initial={'dustbinBill':oldBill.refuseBill, 
+                                                      'electricBill':oldBill.electricityBill, 'waterBill':oldBill.waterBill, 
+                                                      'user':request.user})
     context = {
         'form': form,
     }
@@ -410,7 +416,10 @@ def billsView(request):
 
 
 def utilityBillsView(request):
-    form = MonthlyBillForm(initial={'refuseBill':0.00, 'electricityBill':0.00, 'waterBill':0.00, 'user':request.user})
+    form = MonthlyBillForm(initial={'refuseBill':0.00, 
+                                    'electricityBill':0.00, 
+                                    'waterBill':0.00, 
+                                    'user':request.user})
     context = {
         'form': form,
     }
@@ -438,6 +447,7 @@ def dashboardView(request):
     refuseBillList = ''
     electricityBillList = ''
     dateOnBillList = ''
+    #Creating list of waterbill, electricity bill and refuse bill to be used by javascript to create array for drawing of graph
     for bill in monthlyBill:
         totalWaterBill += bill.waterBill
         totalRefuseBill += bill.refuseBill

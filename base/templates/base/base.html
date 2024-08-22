@@ -27,6 +27,9 @@
                   <li class="nav-item">
                     <a class="nav-link text-white" href="{% url "signOut" %}">Logout</a>
                   </li>
+                  <li class="nav-item">
+                    <img class="rounded-circle" src="{{request.user.userprofile.image.url}}" alt="user image" style="width:40px; height:40px">
+                  </li>
                   {% else %}
                   <li class="nav-item">
                     <a class="nav-link text-white" href="{% url "home" %}">Login</a>
@@ -58,7 +61,6 @@
         {% block content %}{% endblock content %}
     </main>
     
-
     <footer class="bg-primary">
         <div class="container text-center text-white py-4">
             <p class="m-0">All rights reserved @ Utils</p>
