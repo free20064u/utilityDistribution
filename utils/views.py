@@ -53,12 +53,13 @@ def addPeopleView(request, id=None):
    
         form = NumberOfIndividualsForm(request.POST)
         if form.is_valid():
-            try:
-                obj, created = NumberOfIndividuals.objects.update_or_create(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household_id=id, defaults={'numberOfIndividuals':request.POST['numberOfIndividuals']})
-                messages.success(request, 'Number of people for this household for this month has been updated')
-            except:
-                form.save()
-                messages.success(request, 'Number of people for this household for this month is added')
+            object, created = NumberOfIndividuals.objects.update_or_create(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household_id=id, defaults={'numberOfIndividuals':request.POST['numberOfIndividuals'], 'dateOnBill':dateOnBill})
+            if created:
+                message = 'created'
+            else:
+                message = 'updated'
+            messages.success(request, f'Number of people for this household for this month has been {message}')
+            print(created, object)
             return redirect('household')
         else:
             messages.error(request, 'Number of people for this month not saved')
@@ -97,7 +98,7 @@ def payBillView(request, id=None):
 
 def addHouseholdApplianceView(request, id=None):
     # Get all the appliance to use to populate the initials for the formset
-    appliances = Appliance.objects.all().order_by('name')
+    appliances = Appliance.objects.filter(user=request.user.id).order_by('name')
     # Initials to be used in the formset
     initial=[{'appliance': appliance,'household':Household.objects.get(id=id), 'dateOnBill':MonthlyBill.objects.last().dateOnBill} for appliance in appliances]
     # Formset for the appliance used by the households
@@ -188,7 +189,7 @@ def profileView(request, id=None):
                 householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
             # Current household refuse bill
             if currentmonthlyBills.refuseBill != Decimal(0.00):
-                householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
+                householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.filter(user_id=request.user.id).count()
 
             # Current household electricity bill
             if currentmonthlyBills.electricityBill != Decimal(0.00):
@@ -329,7 +330,7 @@ def addApplianceView(request):
     
 
 def electricalApplianceView(request):
-    appliances = Appliance.objects.all().order_by('name')
+    appliances = Appliance.objects.filter(user=request.user.id).order_by('name')
     context = {
         'appliances': appliances,
     }
@@ -377,7 +378,7 @@ def addHouseholdView(request):
 
 
 def householdView(request):
-    households = Household.objects.all().order_by('name')
+    households = Household.objects.filter(user=request.user.id).order_by('name')
     context = {
         'households': households,
     }

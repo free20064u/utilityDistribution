@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from decimal import Decimal
 
-from .models import Household, Payment, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt, UserProfile
+from .models import Household, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt, UserProfile
 
 
 @receiver(post_save, sender=User)
@@ -14,7 +14,7 @@ def createProfile(sender, instance, created, **kwarg):
 
 
 def checkparameters(dateOnBill=None, user_id=None):
-    households = Household.objects.all()
+    households = Household.objects.filter(user_id=user_id)
     for household in households:
 
         # Household appliance for the current month
@@ -94,7 +94,7 @@ def updateBill(dateOnBill=None, household_id=None, user_id=None):
         householdWaterBill = currentNumberOfPeople.numberOfIndividuals*currentmonthlyBills.waterBill/totalNumberOfPeople
     # Current household refuse bill
     if currentmonthlyBills.refuseBill != Decimal(0.00):
-        householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.all().count()
+        householdRefuseBill = currentmonthlyBills.refuseBill/Household.objects.filter(user_id=user_id).count()
 
     # Current household electricity bill
     if currentmonthlyBills.electricityBill != Decimal(0.00):
@@ -104,12 +104,6 @@ def updateBill(dateOnBill=None, household_id=None, user_id=None):
     householdTotalBill = householdWaterBill + householdRefuseBill + householdElectricityBill
 
     print(householdTotalBill, householdWaterBill , householdRefuseBill , householdElectricityBill)
-
-    #dept = Debt.objects.filter(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household=Household.objects.get(id=household_id))
-    #if dept != None:
-    #     Debt.objects.create(dateOnBill=dateOnBill, household=Household.objects.get(id=household_id),totalDept=householdTotalBill)
-    # else:
-    #     Debt.objects.update(totalDept=householdTotalBill)
 
     object, created = Debt.objects.get_or_create(dateOnBill__month=dateOnBill.month, dateOnBill__year=dateOnBill.year, household=Household.objects.get(id=household_id), defaults={'dateOnBill':dateOnBill, 'household_id':household_id, 'totalDept':householdTotalBill})
 
@@ -124,7 +118,7 @@ def my_handler(sender, instance, **kwargs):
 
     if (checkparameters(dateOnBill=instance.dateOnBill,user_id=instance.household.user.id)):
         print(2)
-        for household in Household.objects.all():
+        for household in Household.objects.filter(user_id=instance.household.user_id):
             updateBill(dateOnBill=instance.dateOnBill, household_id=household.id, user_id=instance.household.user.id)
         print(3)
 
@@ -133,7 +127,7 @@ def my_handler(sender, instance, **kwargs):
     print(instance.dateOnBill, instance.user.id)
 
     if (checkparameters(dateOnBill=instance.dateOnBill,user_id=instance.user.id)):
-        for household in Household.objects.all():
+        for household in Household.objects.filter(user_id=instance.household.user_id):
             updateBill(dateOnBill=instance.dateOnBill, household_id=household.id, user_id=instance.user.id)
 
 
@@ -142,5 +136,5 @@ def my_handler(sender, instance, **kwargs):
     print(instance.dateOnBill, instance.household.user.id)
 
     if (checkparameters(dateOnBill=instance.dateOnBill,user_id=instance.household.user.id)):
-        for household in Household.objects.all():
+        for household in Household.objects.filter(user_id=instance.user_id):
             updateBill(dateOnBill=instance.dateOnBill, household_id=household.id, user_id=instance.household.user.id)
