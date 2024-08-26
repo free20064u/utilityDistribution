@@ -1,13 +1,34 @@
 from django.shortcuts import render, redirect
 #from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.contrib import messages
 
-from .forms import UserRegisterationForm
-#from utils.forms import UserProfileForm
+from .forms import UserRegisterationForm, UserProfilePicForm
+from utils.models import UserProfilePic
 
 
 # Create your views here.
+def editUserView(request, id=None):
+    instance = UserProfilePic.objects.get(user_id=id)
+    form = UserProfilePicForm(instance=instance)
+    context = {
+        'form': form,
+    }
+    if request.method == 'POST':
+        form = UserProfilePicForm(request.POST, request.FILES, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile picture updated')
+            return redirect('household')
+        else:
+            context['form'] = form
+            messages.error(request, 'Profile picture not updated')
+            return render(request, 'accounts/editUser.html', context)
+    else:
+        return render(request, 'accounts/editUser.html', context)
+
+
 def registerView(request):
     form = UserRegisterationForm()
     #form2 = UserProfileForm()

@@ -3,13 +3,13 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from decimal import Decimal
 
-from .models import Household, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt, UserProfile
+from .models import Household, NumberOfIndividuals, MonthlyBill, HouseholdAppliance, Debt, UserProfilePic
 
 
 @receiver(post_save, sender=User)
 def createProfile(sender, instance, created, **kwarg):
     if created:
-        UserProfile.objects.create(user=instance)
+        UserProfilePic.objects.create(user=instance)
 
 
 

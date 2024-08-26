@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
-from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance, UserProfile
+from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance, UserProfilePic
 
 
 
@@ -17,7 +17,7 @@ class UserProfileForm(ModelForm):
     image = forms.ImageField()
 
     class Meta:
-        model = UserProfile
+        model = UserProfilePic
         fields = ['image', 'user']
 
 

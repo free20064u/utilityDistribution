@@ -28,10 +28,10 @@
                     <a class="nav-link text-white" href="{% url "signOut" %}">Logout</a>
                   </li>
                   <li class="nav-item">
-                    <img class="rounded-circle" src="{{request.user.userprofile.image.url}}" alt="user image" style="width:40px; height:40px">
+                    <a class="nav-link text-white" href="{% url "editUser" request.user.id %}">{{ request.user.username | title }}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "signOut" %}">{{ request.user.username | title }}</a>
+                    <img class="rounded-circle" src="{{ request.user.userprofilepic.image.url }}" alt="user image" style="width:40px; height:40px">
                   </li>
                   {% else %}
                   <li class="nav-item">

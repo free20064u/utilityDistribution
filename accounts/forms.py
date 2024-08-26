@@ -1,7 +1,15 @@
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from utils.models import UserProfilePic
 
+
+class UserProfilePicForm(ModelForm):
+    image = forms.ImageField()
+
+    class Meta:
+        model = UserProfilePic
+        fields = ['image']
 
 
 class UserRegisterationForm(ModelForm):

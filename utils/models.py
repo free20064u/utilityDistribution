@@ -3,10 +3,9 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-class UserProfile(models.Model):
+class UserProfilePic(models.Model):
     image = models.ImageField(default='userImage/defaultImage.jpg', upload_to='userImage')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     
 
 class Household(models.Model):
