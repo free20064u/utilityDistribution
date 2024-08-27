@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-#from django.contrib.auth.models import User
 from django.forms import formset_factory
 
 from datetime import datetime
@@ -9,8 +8,7 @@ from decimal import Decimal
 
 from accounts.forms import UserLoginForm
 from .forms import (MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, 
-                    NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm, 
-                    UserProfileForm)
+                    NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm)
 
 from .models import (MonthlyBill, Household, Appliance, NumberOfIndividuals, 
                      Payment, HouseholdAppliance, Debt)
@@ -440,7 +438,7 @@ def utilityBillsView(request):
     
 
 def dashboardView(request):
-    monthlyBill = MonthlyBill.objects.all()
+    monthlyBill = MonthlyBill.objects.filter(user_id=request.user.id)
     totalWaterBill=0
     totalRefuseBill=0
     totalElectricityBill=0

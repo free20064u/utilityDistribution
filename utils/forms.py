@@ -31,7 +31,7 @@ class PaymentForm(ModelForm):
 
 class ApplianceForm(ModelForm):
     name = forms.CharField(label='Appliance Name', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Fridge'}))
-    power = forms.CharField(label='Appliance Name', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'200W'}))
+    power = forms.CharField(label='Power(W)', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'200'}))
     user = forms.ModelChoiceField(label='', queryset=User.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = Appliance

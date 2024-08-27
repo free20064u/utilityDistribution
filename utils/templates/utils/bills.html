@@ -11,34 +11,62 @@
             {% include "accounts/menu.html" %}
         </div>
         <div class="col-12 col-md-9 mt-2">
-            <table class="table table-striped table-info table-hover">
-                <thead>
-                    <tr class="">
-                        <th scope="col" class="bg-dark text-white">No</th>
-                        <th scope="col" class="bg-dark text-white">Date Added</th>
-                        <th scope="col" class="bg-dark text-white">Dustbin</th>
-                        <th scope="col" class="bg-dark text-white">Electric</th>
-                        <th scope="col" class="bg-dark text-white">Water</th>
-                        <th scope="col" class="bg-dark text-white">Total</th>
-                        <th scope="col" class="bg-dark text-white">Bill Date</th>
-                        <th scope="col" class="bg-dark text-white">Action</th>
-                    </tr>
-                </thead>
-                <tbody >
-                    {% for bill in bills  %}
-                    <tr>
-                        <th scope="col">{{ forloop.counter }} </th>
-                        <td scope="col">{{ bill.entryDate }} </td>
-                        <td scope="col">{{ bill.refuseBill }}</td>
-                        <td scope="col">{{ bill.electricityBill }}</td>
-                        <td scope="col">{{ bill.waterBill }}</td>
-                        <td scope="col">{{ bill.totalBill }}</td>
-                        <td scope="col">{{ bill.dateOnBill }}</td>
-                        <td scope="col"><a href="{% url "editBill" bill.id %}">Edit</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="d-block d-md-none">
+                    <table class="table table-striped table-info table-hover">
+                        <thead>
+                            <tr class="">
+                                <th scope="col" class="bg-dark text-white">Dustbin</th>
+                                <th scope="col" class="bg-dark text-white">Electric</th>
+                                <th scope="col" class="bg-dark text-white">Water</th>
+                                <th scope="col" class="bg-dark text-white">Bill Date</th>
+                                <th scope="col" class="bg-dark text-white">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {% for bill in bills  %}
+                            <tr>
+                                <td scope="col">{{ bill.refuseBill }}</td>
+                                <td scope="col">{{ bill.electricityBill }}</td>
+                                <td scope="col">{{ bill.waterBill }}</td>
+                                <td scope="col">{{ bill.dateOnBill }}</td>
+                                <td scope="col"><a href="{% url "editBill" bill.id %}" class="text-white text-decoration-none bg-warning px-1">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-none d-md-block">
+                    <table class="table table-striped table-info table-hover">
+                        <thead>
+                            <tr class="">
+                                <th scope="col" class="bg-dark text-white">No</th>
+                                <th scope="col" class="bg-dark text-white">Date Added</th>
+                                <th scope="col" class="bg-dark text-white">Dustbin</th>
+                                <th scope="col" class="bg-dark text-white">Electric</th>
+                                <th scope="col" class="bg-dark text-white">Water</th>
+                                <th scope="col" class="bg-dark text-white">Total</th>
+                                <th scope="col" class="bg-dark text-white">Bill Date</th>
+                                <th scope="col" class="bg-dark text-white">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            {% for bill in bills  %}
+                            <tr>
+                                <th scope="col">{{ forloop.counter }} </th>
+                                <td scope="col">{{ bill.entryDate }} </td>
+                                <td scope="col">{{ bill.refuseBill }}</td>
+                                <td scope="col">{{ bill.electricityBill }}</td>
+                                <td scope="col">{{ bill.waterBill }}</td>
+                                <td scope="col">{{ bill.totalBill }}</td>
+                                <td scope="col">{{ bill.dateOnBill }}</td>
+                                <td scope="col"><a href="{% url "editBill" bill.id %}" class="text-white text-decoration-none bg-warning px-1">Edit</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

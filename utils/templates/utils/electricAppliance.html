@@ -14,40 +14,66 @@
             <div class="row">
                 <div class="col-12 col-md-12 mb-1">
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-12 col-md-9">
                             <form class="d-flex">
                                 <input class="form-control" type="search" placeholder="Search">
                                 <button class="btn btn-outline-primary" type="submit">Search</button>
                               </form>
                         </div>
-                        <div class="col-3 text-end">
+                        <div class="col-3 text-end d-none d-md-inline">
                             <a href="{% url "addAppliance" %}"><button class="btn btn-outline-success" type="submit">Add Electric Appl</button></a>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-12">
-                    <table class="table table-striped table-info table-hover">
-                        <thead>
-                            <tr class="">
-                                <th scope="col" class="bg-dark text-white">No</th>
-                                <th scope="col" class="bg-dark text-white">Date</th>
-                                <th scope="col" class="bg-dark text-white">Appliance</th>
-                                <th scope="col" class="bg-dark text-white">Power</th>
-                                <th scope="col" class="bg-dark text-white">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody >
-                            {% for appliance in appliances  %}
-                            <tr>
-                                <th scope="col">{{ forloop.counter }} </th>
-                                <td scope="col">{{ appliance.entryDate }} </td>
-                                <td scope="col">{{ appliance.name }} </td>
-                                <td scope="col">{{ appliance.power }}W</td>
-                                <td scope="col"><a href="{% url "editAppliance" appliance.id %}">Edit</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="d-block d-md-none">
+                            <table class="table table-striped table-info table-hover">
+                                <thead>
+                                    <tr class="">
+                                        <th scope="col" class="bg-dark text-white">No</th>
+                                        <th scope="col" class="bg-dark text-white">Appliance</th>
+                                        <th scope="col" class="bg-dark text-white">Power</th>
+                                        <th scope="col" class="bg-dark text-white">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    {% for appliance in appliances  %}
+                                    <tr>
+                                        <th scope="col">{{ forloop.counter }} </th>
+                                        <td scope="col">{{ appliance.name }} </td>
+                                        <td scope="col">{{ appliance.power }}W</td>
+                                        <td scope="col"><a href="{% url "editAppliance" appliance.id %}" class="text-white text-decoration-none bg-warning px-1">Edit</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <table class="table table-striped table-info table-hover">
+                                <thead>
+                                    <tr class="">
+                                        <th scope="col" class="bg-dark text-white">No</th>
+                                        <th scope="col" class="bg-dark text-white">Date</th>
+                                        <th scope="col" class="bg-dark text-white">Appliance</th>
+                                        <th scope="col" class="bg-dark text-white">Power</th>
+                                        <th scope="col" class="bg-dark text-white">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    {% for appliance in appliances  %}
+                                    <tr>
+                                        <th scope="col">{{ forloop.counter }} </th>
+                                        <td scope="col">{{ appliance.entryDate }} </td>
+                                        <td scope="col">{{ appliance.name }} </td>
+                                        <td scope="col">{{ appliance.power }}W</td>
+                                        <td scope="col"><a href="{% url "editAppliance" appliance.id %}" class="text-white text-decoration-none bg-warning px-1">Edit</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div> 
         </div>

@@ -14,13 +14,13 @@
             <div class="row">
                 <div class="col-12 col-md-12 mb-1">
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-12 col-md-9">
                             <form class="d-flex">
                                 <input class="form-control" type="search" placeholder="Search">
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                               </form>
                         </div>
-                        <div class="col-3 text-end">
+                        <div class="col-3 text-end d-none d-md-inline">
                             <a href="{% url "addHousehold" %}"><button class="btn btn-outline-success" type="submit">Add Household</button></a>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                         <thead>
                             <tr class="">
                                 <th scope="col" class="bg-dark text-white">No</th>
-                                <th scope="col" class="bg-dark text-white">Date</th>
+                                
                                 <th scope="col" class="bg-dark text-white">Name</th>
                                 <th scope="col" class="bg-dark text-white">Contact</th>
                                 <th scope="col" class="bg-dark text-white">Action</th>
@@ -40,12 +40,11 @@
                             {% for household in households  %}
                             <tr>
                                 <th scope="col">{{ forloop.counter }} </th>
-                                <td scope="col">{{ household.date }} </td>
                                 <td scope="col">{{ household.name }} </td>
                                 <td scope="col">{{ household.contact }}</td>
                                 <td scope="col">
-                                    <a href="{% url "profile" household.id %}">View</a>
-                                    <a href="{% url "editHousehold" household.id %}">Edit</a>
+                                    <a href="{% url "profile" household.id %}" class="text-white text-decoration-none bg-success px-1">View</a>
+                                    <a href="{% url "editHousehold" household.id %}" class="text-white text-decoration-none bg-warning px-1">Edit </a>
                                 </td>
                             </tr>
                             {% endfor %}
