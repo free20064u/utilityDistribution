@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class UserProfilePic(models.Model):
-    image = models.ImageField(default='userImage/defaultImage.jpg', upload_to='userImage')
+    image = models.ImageField(default='userImage/defaultImage.png', upload_to='userImage')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
 
@@ -13,7 +13,7 @@ class Household(models.Model):
     contact = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     entryDate = models.DateField(auto_now_add=True)
-    image = models.ImageField(default='householdImages/defaultImage.jpg', upload_to='householdImages')
+    image = models.ImageField(default='householdImages/defaultImage.png', upload_to='householdImages')
     
 
     def __str__(self):

@@ -5,16 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Utils | {% block pageTitle %}{% endblock pageTitle %} </title>
+    <link rel="shortcut icon" href="{% static "base/images/defaultImage.png" %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static "base/bootstrap/css/bootstrap.min.css" %}">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-primary">
             <div class="container">
+              <img src="{% static "base/images/defaultImage.png" %}" alt="logo" style="width:2.6rem">
               <a class="navbar-brand text-white" href="{% url "home" %}">UTILS</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
+              
               <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                   <li class="nav-item">
