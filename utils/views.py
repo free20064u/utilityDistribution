@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.forms import formset_factory
 
+import git
+
 from datetime import datetime
 from decimal import Decimal
 
@@ -19,6 +21,14 @@ now = datetime.now()
 
 
 # # Create your views here.
+def gitUpdateView(request, methods=['POST']):
+    repo = git.Repo('./orbe')
+    origin = repo.remotes.origin
+    repo.create_head('main', origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
+    origin.pull()
+    return '', 200
+
+
 def editNoOfPeopleView(request, id=None):
     noOfPeople = NumberOfIndividuals.objects.get(entryDate__month=now.month, entryDate__year=now.year, household=Household.objects.get(id=id))
     
