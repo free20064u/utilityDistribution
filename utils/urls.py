@@ -23,4 +23,5 @@ urlpatterns = [
     path('payBill/<int:id>/', views.payBillView, name='payBill'),
     path('addPeople/<int:id>/', views.addPeopleView, name='addPeople'),
     path('editNoOfPeople/<int:id>/', views.editNoOfPeopleView, name='editNoOfPeople'),
+    path('git_update/', views.webhook, name='git_update'),
  ]
