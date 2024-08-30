@@ -26,7 +26,7 @@ now = datetime.now()
 # # Create your views here.
 @csrf_exempt
 def webhook(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         repo = Repo('./django-schools')
         git = repo.git
         git.checkout('master')
