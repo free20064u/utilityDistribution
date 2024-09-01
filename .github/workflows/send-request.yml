@@ -1,0 +1,21 @@
+name: Send Request
+on:
+  push:
+    branches:
+      -main
+    
+jobs:
+  send-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Request
+        uses: actions/http-client@v1
+        with:
+          url: https://utilitydistribution.pythonanywhere.com/git_update
+          mehtod: POST
+          headers: |
+            Content-Type: application/json
+          body: |
+            {
+              "foo": "bar"
+            }
