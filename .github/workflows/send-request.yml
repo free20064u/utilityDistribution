@@ -5,17 +5,15 @@ on:
       - main
     
 jobs:
-  send-request:
+  deployment:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Request
-        uses: actions/http-client@v2
-        with:
-          url: https://utilitydistribution.pythonanywhere.com/git_update
-          mehtod: POST
-          headers: |
-            Content-Type: application/json
-          body: |
-            {
-              "foo": "bar"
-            }
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: https://utilitydistribution.pythonanywhere.com/git_update'
+        method: 'POST'
+        customHeaders: |
+          '{"Content-Type": "application/json"}'
+        data: '{"key_1": "value_1", "key_2": "value_2"}'
+              
