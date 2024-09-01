@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Request
-        uses: actions/http-client@v1
+        uses: actions/http-client@v2
         with:
           url: https://utilitydistribution.pythonanywhere.com/git_update
           mehtod: POST
