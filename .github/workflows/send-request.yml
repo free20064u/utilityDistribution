@@ -13,7 +13,7 @@ jobs:
       with:
         url: https://utilitydistribution.pythonanywhere.com/git_update'
         method: 'POST'
-        customHeaders: |
+        headers: |
           '{"Content-Type": "application/json"}'
         data: '{"key_1": "value_1", "key_2": "value_2"}'
               
