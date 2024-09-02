@@ -3,17 +3,32 @@ on:
   push:
     branches:
       - main
-    
 jobs:
-  deployment:
+  main:
     runs-on: ubuntu-latest
     steps:
-    - name: Deploy Stage
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: https://utilitydistribution.pythonanywhere.com/git_update'
-        method: 'POST'
-        customHeaders: |
-          '{"Content-Type": "application/json"}'
-        data: '{"key_1": "value_1", "key_2": "value_2"}'
-              
+      - name: Send HTTP request
+        id: request
+        uses: tyrrrz/action-http-request@master
+        with:
+          url: https://utilitydistribution.pythonanywhere.com/git_update
+          method: POST
+          headers: |
+            Content-Type: application/json
+          body: |
+            {
+              "foo": "bar"
+            }
+          retry-count: 3
+          retry-delay: 500
+
+      - name: Print outputs
+        run: |
+          echo "Status: ${{ steps.request.outputs.status }}"
+          echo "Success: ${{ steps.request.outputs.success }}"
+          echo "Headers: ${{ steps.request.outputs.headers }}"
+          echo "Body: ${{ steps.request.outputs.body }}"
+
+
+
+        
