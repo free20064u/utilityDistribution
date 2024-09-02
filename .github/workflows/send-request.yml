@@ -11,7 +11,7 @@ jobs:
         id: request
         uses: tyrrrz/action-http-request@master
         with:
-          url: https://utilitydistribution.pythonanywhere.com/git_update
+          url: 'https://utilitydistribution.pythonanywhere.com/update/'
           method: POST
           headers: |
             Content-Type: application/json
