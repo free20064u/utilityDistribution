@@ -24,6 +24,14 @@ now = datetime.now()
 
 
 # # Create your views here.
+def docsView(request):
+    return render(request, 'utils/docs.html')
+
+
+def contactView(request):
+    return render(request, 'utils/contact.html')
+
+
 @csrf_exempt
 def webhook(request):
     repo = Repo('/home/utilityDistribution/utilityDistribution')

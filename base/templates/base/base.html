@@ -23,6 +23,12 @@
                   <li class="nav-item">
                     <a class="nav-link text-white active" aria-current="page" href="{% url "home" %}">Home</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-white active" aria-current="page" href="{% url "docs" %}">Docs</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-white active" aria-current="page" href="{% url "contact" %}">Contact</a>
+                  </li>
                   {% if request.user.is_authenticated %}
                   <li class="nav-item">
                     <a class="nav-link text-white" href="{% url "dashboard" %}">Dashboard</a>

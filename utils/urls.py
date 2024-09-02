@@ -24,4 +24,6 @@ urlpatterns = [
     path('addPeople/<int:id>/', views.addPeopleView, name='addPeople'),
     path('editNoOfPeople/<int:id>/', views.editNoOfPeopleView, name='editNoOfPeople'),
     path('update/', views.webhook, name='update'),
+    path('docs', views.docsView, name='docs'),
+    path('contact', views.contactView, name='contact')
  ]
