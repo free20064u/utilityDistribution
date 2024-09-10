@@ -4,12 +4,32 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-from .forms import UserRegisterationForm, UserProfilePicForm
+from .forms import UserRegisterationForm, UserProfilePicForm, EditUserForm
 from utils.models import UserProfilePic
 
 
 # Create your views here.
-def editUserView(request, id=None):
+def editUserDetailView(request, id=None):
+    instance = User.objects.get(id=id)
+    form = EditUserForm(instance=instance)
+    context = {
+        'form': form,
+    }
+    if request.method == 'POST':
+        form = EditUserForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your information has been editted successfully')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Details not editted')
+            return render(request, 'accounts/editUserDetail.html', context)
+    else:
+        return render(request, 'accounts/editUserDetail.html', context)
+    
+
+
+def editUserPicView(request, id=None):
     instance = UserProfilePic.objects.get(user_id=id)
     form = UserProfilePicForm(instance=instance)
     context = {

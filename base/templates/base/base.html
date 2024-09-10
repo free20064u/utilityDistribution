@@ -37,10 +37,10 @@
                     <a class="nav-link text-white" href="{% url "signOut" %}">Logout</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "editUserPic" request.user.id %}">{{ request.user.username | title }}</a>
+                    <a class="nav-link text-white" href="{% url "editUserDetail" request.user.id %}">{{ request.user.username | title }}</a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url "editUserDetail" request.user.id %}"><img class="rounded-circle" src="{{ request.user.userprofilepic.image.url }}" alt="user image" style="width:40px; height:40px"></a>
+                    <a href="{% url "editUserPic" request.user.id %}"><img class="rounded-circle" src="{{ request.user.userprofilepic.image.url }}" alt="user image" style="width:40px; height:40px"></a>
                   </li>
                   {% else %}
                   <li class="nav-item">

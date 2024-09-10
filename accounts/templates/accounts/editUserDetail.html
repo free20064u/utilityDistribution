@@ -1,0 +1,30 @@
+<!--Form for registering user of the web app-->
+{% extends "base/base.html" %}
+{% block pageTitle %} Home{% endblock pageTitle %}Home
+
+{% block content %}
+    <div class="container text-center">
+        <h1 class="m-0">Edit Your Details</h1>
+        <div class="row text-center">
+            <div class="col-12 col-md-4 m-auto my-1">
+                <form action="" method="post" class="border border-3 border-dark-subtle rounded p-2 my-md-4 bg-primary-subtle">
+                    {% csrf_token %}
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary my-4 col-12">Submit</button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
