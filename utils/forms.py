@@ -2,9 +2,18 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 
-from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance, UserProfilePic
+from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividuals, HouseholdAppliance, UserProfilePic, Enquiry
 
 
+
+class EnquiryForm(ModelForm):
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'example@gmail.com'}))
+    title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'enter bills'}))
+    message = forms.CharField(label='Name', widget=forms.Textarea(attrs={'class':'form-control','placeholder':'messages'}))
+    
+    class Meta:
+        model = Enquiry
+        fields =['email', 'title', 'message']
 
 
 class SearchForm(forms.Form):

@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+class Enquiry(models.Model):
+    title = models.CharField(max_length=200)
+    email = models.EmailField()
+    message = models.TextField()
+
+
 class UserProfilePic(models.Model):
     image = models.ImageField(default='userImage/defaultImage.png', upload_to='userImage')
     user = models.OneToOneField(User, on_delete=models.CASCADE)

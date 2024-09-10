@@ -13,10 +13,10 @@ from decimal import Decimal
 
 from accounts.forms import UserLoginForm
 from .forms import (MonthlyBillForm, HouseholdForm, ApplianceForm, PaymentForm, 
-                    NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm)
+                    NumberOfIndividualsForm, HouseholdApplianceForm, SearchForm, EnquiryForm)
 
 from .models import (MonthlyBill, Household, Appliance, NumberOfIndividuals, 
-                     Payment, HouseholdAppliance, Debt)
+                     Payment, HouseholdAppliance, Debt, Enquiry)
 
 from .signals import checkHouseholdparameters
 
@@ -29,7 +29,21 @@ def docsView(request):
 
 
 def contactView(request):
-    return render(request, 'utils/contact.html')
+    form = EnquiryForm()
+    context = {
+        'form': form,
+    }
+    if request.method == 'POST':
+        form = EnquiryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Message is sent')
+            return redirect('contact')
+        else:
+            messages.error(request, 'Message is not sent')
+            return redirect('contact')
+    else:
+        return render(request, 'utils/contact.html', context)
 
 
 @csrf_exempt
