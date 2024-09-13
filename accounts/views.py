@@ -51,7 +51,6 @@ def editUserPicView(request, id=None):
 
 def registerView(request):
     form = UserRegisterationForm()
-    #form2 = UserProfileForm()
     context = {
         'form': form,
     }

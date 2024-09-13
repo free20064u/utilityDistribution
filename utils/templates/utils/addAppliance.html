@@ -5,14 +5,14 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="text-center">{% if edit %}Edit {%else%} Add {% endif %}Electric Appliance</h1>
+    <h1 class="text-center display-6">{% if edit %}Edit {%else%} Add {% endif %}Electric Appliance</h1>
     <div class="row">
         <div class="col-12 col-md-3">
             {% include "accounts/menu.html" %}
         </div>
         <div class="col-12 col-md-9">
             <div class="col-12 col-md-6 mx-auto">
-                <form action="" method="post" class="border border-3 border-dark-subtle rounded p-2 my-md-2 bg-primary-subtle">
+                <form action="" method="post" class="border border-3 border-dark-subtle rounded p-2 my-md-1 bg-primary-subtle">
                     {% csrf_token %}
                     {{form}}
                     <div class="row">

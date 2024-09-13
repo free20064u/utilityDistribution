@@ -4,10 +4,10 @@
 
 {% block content %}
     <div class="container text-center">
-        <h1 class="m-0">register</h1>
+        <h1 class="m-0 display-6">Register</h1>
         <div class="row text-center">
-            <div class="col-12 col-md-4 m-auto my-1">
-                <form action="" method="post" class="border border-3 border-dark-subtle rounded p-2 my-md-4 bg-primary-subtle">
+            <div class="col-12 col-md-4 mx-auto">
+                <form action="" method="post" class="border border-3 border-dark-subtle rounded p-2 my-md-1 bg-primary-subtle">
                     {% csrf_token %}
                     {{ form.first_name.label_tag }}
                     {{ form.first_name }}
