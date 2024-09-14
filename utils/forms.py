@@ -7,9 +7,9 @@ from .models import MonthlyBill, Household, Appliance, Payment, NumberOfIndividu
 
 
 class EnquiryForm(ModelForm):
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'example@gmail.com'}))
-    title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'enter bills'}))
-    message = forms.CharField(label='Name', widget=forms.Textarea(attrs={'class':'form-control','placeholder':'messages'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class':'form-control mb-2','placeholder':'example@gmail.com'}))
+    title = forms.CharField(label='Title', widget=forms.TextInput(attrs={'class':'form-control mb-2','placeholder':'enter bills'}))
+    message = forms.CharField(label='Name', widget=forms.Textarea(attrs={'class':'form-control mb-2','placeholder':'messages'}))
     
     class Meta:
         model = Enquiry
@@ -31,7 +31,7 @@ class UserProfileForm(ModelForm):
 
 
 class PaymentForm(ModelForm):
-    amount = forms.DecimalField(label='Amount', widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    amount = forms.DecimalField(label='Amount', widget=forms.NumberInput(attrs={'class': 'form-control mb-2'}))
     household = forms.ModelChoiceField(label='', queryset=Household.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = Payment
@@ -39,8 +39,8 @@ class PaymentForm(ModelForm):
 
 
 class ApplianceForm(ModelForm):
-    name = forms.CharField(label='Appliance Name', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Fridge'}))
-    power = forms.CharField(label='Power(W)', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'200'}))
+    name = forms.CharField(label='Appliance Name', widget=forms.TextInput(attrs={'class':'form-control mb-2','placeholder':'Fridge'}))
+    power = forms.CharField(label='Power(W)', widget=forms.TextInput(attrs={'class':'form-control mb-2','placeholder':'200'}))
     user = forms.ModelChoiceField(label='', queryset=User.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = Appliance
@@ -49,8 +49,8 @@ class ApplianceForm(ModelForm):
 
 
 class HouseholdForm(ModelForm):
-    name = forms.CharField(label='Name', widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Micheal Amponsah'}))
-    contact = forms.CharField(label='Contact', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'0242255888'}))
+    name = forms.CharField(label='Name', widget=forms.TextInput(attrs={'class':'form-control mb-2','placeholder':'Micheal Amponsah'}))
+    contact = forms.CharField(label='Contact', widget=forms.TextInput(attrs={'class':'form-control mb-2', 'placeholder':'0242255888'}))
     user = forms.ModelChoiceField(label='', queryset=User.objects.all(), widget=forms.HiddenInput())
 
     class Meta:
@@ -59,10 +59,10 @@ class HouseholdForm(ModelForm):
 
 
 class MonthlyBillForm(ModelForm):
-    dateOnBill = forms.DateField(label='Date on bill', widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
-    refuseBill = forms.DecimalField(label='Dustbin bill', widget=forms.NumberInput(attrs={'class':'form-control'}))
-    electricityBill = forms.DecimalField(label='electric bill', widget=forms.NumberInput(attrs={'class':'form-control'}))
-    waterBill = forms.DecimalField(label='Water bill', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    dateOnBill = forms.DateField(label='Date on bill', widget=forms.DateInput(attrs={'class':'form-control mb-2', 'type':'date'}))
+    refuseBill = forms.DecimalField(label='Dustbin bill', widget=forms.NumberInput(attrs={'class':'form-control mb-2'}))
+    electricityBill = forms.DecimalField(label='electric bill', widget=forms.NumberInput(attrs={'class':'form-control mb-2'}))
+    waterBill = forms.DecimalField(label='Water bill', widget=forms.NumberInput(attrs={'class':'form-control mb-2'}))
     user = forms.ModelChoiceField(label='', queryset=User.objects.all(), widget=forms.HiddenInput())
     
     class Meta:
@@ -71,8 +71,8 @@ class MonthlyBillForm(ModelForm):
 
     
 class NumberOfIndividualsForm(ModelForm):
-    dateOnBill = forms.CharField(label='Date On Bill', widget=forms.DateInput(attrs={'class': 'form-control', 'type':'date'}))
-    numberOfIndividuals = forms.DecimalField(label='Number Of Individuals', widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    dateOnBill = forms.CharField(label='Date On Bill', widget=forms.DateInput(attrs={'class': 'form-control mb-2', 'type':'date'}))
+    numberOfIndividuals = forms.DecimalField(label='Number Of Individuals', widget=forms.NumberInput(attrs={'class': 'form-control mb-2'}))
     household = forms.ModelChoiceField(label='', queryset=Household.objects.all(), widget=forms.HiddenInput())
     class Meta:
         model = NumberOfIndividuals
@@ -81,10 +81,10 @@ class NumberOfIndividualsForm(ModelForm):
 
 
 class HouseholdApplianceForm(ModelForm):
-    #dateOnBill = forms.CharField(label='Date On Bill', widget=forms.HiddenInput(attrs={'class':'form-control', 'type':'date'}))
+    #dateOnBill = forms.CharField(label='Date On Bill', widget=forms.HiddenInput(attrs={'class':'form-control mb-2', 'type':'date'}))
     household = forms.ModelChoiceField(label='', queryset=Household.objects.all(), widget=forms.HiddenInput())
-    appliance = forms.ModelChoiceField(label='Appliance Name',queryset=Appliance.objects.all(), widget=forms.Select(attrs={'class':'form-control','placeholder':'Fridge'}))
-    quantity = forms.CharField(label='Quantity', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    appliance = forms.ModelChoiceField(label='Appliance Name',queryset=Appliance.objects.all(), widget=forms.Select(attrs={'class':'form-control mb-2','placeholder':'Fridge'}))
+    quantity = forms.CharField(label='Quantity', widget=forms.NumberInput(attrs={'class':'form-control mb-2'}))
     class Meta:
         model = HouseholdAppliance
         fields = [ 'appliance', 'quantity', 'household']

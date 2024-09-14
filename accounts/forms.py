@@ -13,12 +13,12 @@ class UserProfilePicForm(ModelForm):
 
 
 class UserRegisterationForm(ModelForm):
-    first_name = forms.CharField(label='First name', widget = forms.TextInput(attrs={'class':'form-control'}))
-    last_name = forms.CharField(label='Last name', widget = forms.TextInput(attrs={'class':'form-control'}))
-    username = forms.CharField(label='Username', widget = forms.TextInput(attrs={'class':'form-control'}))
-    email = forms.CharField(label='Email', widget = forms.EmailInput(attrs={'class':'form-control'}))
-    password = forms.CharField( label='Password', widget = forms.PasswordInput(attrs={'class': 'form-control'}))
-    password_confirm = forms.CharField( label='Password Confirm', widget= forms.PasswordInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='First name', widget = forms.TextInput(attrs={'class':'form-control mb-2'}))
+    last_name = forms.CharField(label='Last name', widget = forms.TextInput(attrs={'class':'form-control mb-2'}))
+    username = forms.CharField(label='Username', widget = forms.TextInput(attrs={'class':'form-control mb-2'}))
+    email = forms.CharField(label='Email', widget = forms.EmailInput(attrs={'class':'form-control mb-2'}))
+    password = forms.CharField( label='Password', widget = forms.PasswordInput(attrs={'class': 'form-control mb-2'}))
+    password_confirm = forms.CharField( label='Password Confirm', widget= forms.PasswordInput(attrs={'class': 'form-control mb-2'}))
     #image = forms.ImageField()
 
 
@@ -28,10 +28,10 @@ class UserRegisterationForm(ModelForm):
 
 
 class EditUserForm(ModelForm):
-    first_name = forms.CharField(label='First name', widget = forms.TextInput(attrs={'class':'form-control'}))
-    last_name = forms.CharField(label='Last name', widget = forms.TextInput(attrs={'class':'form-control'}))
-    username = forms.CharField(label='Username', widget = forms.TextInput(attrs={'class':'form-control'}))
-    email = forms.CharField(label='Email', widget = forms.EmailInput(attrs={'class':'form-control'}))
+    first_name = forms.CharField(label='First name', widget = forms.TextInput(attrs={'class':'form-control mb-2'}))
+    last_name = forms.CharField(label='Last name', widget = forms.TextInput(attrs={'class':'form-control mb-2'}))
+    username = forms.CharField(label='Username', widget = forms.TextInput(attrs={'class':'form-control mb-2'}))
+    email = forms.CharField(label='Email', widget = forms.EmailInput(attrs={'class':'form-control mb-2'}))
 
 
     class Meta:
@@ -40,8 +40,8 @@ class EditUserForm(ModelForm):
 
 
 class UserLoginForm(ModelForm):
-    username = forms.CharField( label='Username', widget= forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField( label='Password', widget= forms.PasswordInput(attrs={'class': 'form-control'}))
+    username = forms.CharField( label='Username', widget= forms.TextInput(attrs={'class': 'form-control mb-2'}))
+    password = forms.CharField( label='Password', widget= forms.PasswordInput(attrs={'class': 'form-control mb-2'}))
 
     class Meta:
         model = User
