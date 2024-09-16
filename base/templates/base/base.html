@@ -6,56 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Utils | {% block pageTitle %}{% endblock pageTitle %} </title>
     <link rel="shortcut icon" href="{% static "base/images/defaultImage.png" %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static "base/bootstrap/css/bootstrap.min.css" %}">
-    <link href="{% static "base/bootstrap/css/myStyle.css" %}">
+    <link rel="stylesheet" href="{% static "base/bootstrap/css/main.min.css" %}">
 </head>
 <body class="bg-dark-subtle" style="min-height:100vh;display:flex;flex-direction:column">
-    <header>
-        <nav class="navbar navbar-expand-lg bg-primary">
-            <div class="container">
-              <img src="{% static "base/images/defaultImage.png" %}" alt="logo" style="width:2.6rem">
-              <a class="navbar-brand text-white" href="{% url "home" %}">UTILS</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              
-              <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="{% url "home" %}">Home</a>
-                  </li>
-                  <!--<li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="{% url "docs" %}">Docs</a>
-                  </li>-->
-                  <li class="nav-item">
-                    <a class="nav-link text-white active" aria-current="page" href="{% url "contact" %}">Contact</a>
-                  </li>
-                  {% if request.user.is_authenticated %}
-                  <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "dashboard" %}">Dashboard</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "signOut" %}">Logout</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "editUserDetail" request.user.id %}">{{ request.user.username | title }}</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="{% url "editUserPic" request.user.id %}"><img class="rounded-circle" src="{{ request.user.userprofilepic.image.url }}" alt="user image" style="width:40px; height:40px"></a>
-                  </li>
-                  {% else %}
-                  <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "home" %}">Login</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url "register" %}">Register</a>
-                  </li>
-                  {% endif %}
-                </ul>
-              </div>
-            </div>
-          </nav>
-    </header>
+  <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container">
+          <img src="{% static "base/images/defaultImage.png" %}" alt="logo" style="width:2.6rem">
+          <a class="navbar-brand text-white" href="{% url "home" %}">UTILS</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link text-white active" aria-current="page" href="{% url "home" %}">Home</a>
+              </li>
+              <!--<li class="nav-item">
+                <a class="nav-link text-white active" aria-current="page" href="{% url "docs" %}">Docs</a>
+              </li>-->
+              <li class="nav-item">
+                <a class="nav-link text-white active" aria-current="page" href="{% url "contact" %}">Contact</a>
+              </li>
+              {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url "dashboard" %}">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url "signOut" %}">Logout</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url "editUserDetail" request.user.id %}">{{ request.user.username | title }}</a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url "editUserPic" request.user.id %}"><img class="rounded-circle" src="{{ request.user.userprofilepic.image.url }}" alt="user image" style="width:40px; height:40px"></a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url "home" %}">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="{% url "register" %}">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+            
+          </div>
+        </div>
+      </nav> 
+  </header>
+
     <div class="text-center">
       {% if messages %}
         {% for message in messages %}
@@ -70,7 +70,7 @@
       {% endif %}
     </div>
     
-    <main>
+    <main class="pt-2">
         {% block content %}{% endblock content %}
     </main>
     
@@ -81,6 +81,6 @@
             <p class="m-0">Designed by Alphy</p>
         </div>
     </footer>
-    <script src="{% static "base/bootstrap/js/bootstrap.bundle.min.js" %} "></script>
+    <script src="{% static "base/bootstrap/js/bootstrap.js" %} "></script>
 </body>
 </html>
