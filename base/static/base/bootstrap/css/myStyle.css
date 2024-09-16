@@ -47,6 +47,6 @@ td{
 
 body{
   background-image: url('../../images/background-img2.jpg');
-  background-color: rgb(207, 154, 154);
-  background-blend-mode:lighten
+  background-color: rgb(61, 42, 145);
+  background-blend-mode:lighten;
 }
