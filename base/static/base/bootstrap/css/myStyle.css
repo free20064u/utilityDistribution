@@ -1,7 +1,52 @@
-:root{
-  --bs-primary:hsl(315, 98%, 52%);
-  --bs-indigo:#6610f2;
-  --bs-purple:#6f42c1;
-  --bs-pink:#d63384;
-  --bs-red:#dc3545;
+@font-face {
+  font-family: 'roboto';
+  src: url('../../fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'roboto-light';
+  src: url('../../fonts/Roboto/Roboto-Light.ttf');
+}
+
+@font-face {
+  font-family: 'poppins-regular';
+  src: url('../../fonts/Poppins/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'poppins-thin';
+  src: url('../../fonts/Poppins/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'pacifico';
+  src: url('../../fonts/Pacifico/Pacifico-Regular.ttf');
+}
+
+.display-6{
+  font-family: 'roboto-light';
+}
+
+p{
+  font-family: 'roboto';
+}
+
+a{
+  font-family: 'poppins-regular';
+}
+
+td{
+  font-family: 'poppins-thin';
+  color: rgb(80, 79, 79);
+}
+
+.pacifico{
+  font-family: 'pacifico';
+  font-size: 1.2rem;
+}
+
+body{
+  background-image: url('../../images/background-img2.jpg');
+  background-color: rgb(207, 154, 154);
+  background-blend-mode:lighten
 }
