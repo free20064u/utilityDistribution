@@ -15,7 +15,7 @@
 
 @font-face {
   font-family: 'poppins-thin';
-  src: url('../../fonts/Poppins/Poppins-Light.ttf');
+  src: url('../../fonts/Poppins/Poppins-SemiBold.ttf');
 }
 
 @font-face {
@@ -37,8 +37,7 @@ a{
 
 td{
   font-family: 'poppins-thin';
-  color: rgb(32, 32, 32);
-  font-size: 0.9rem;
+  color: rgb(80, 79, 79);
 }
 
 .pacifico{
@@ -47,6 +46,7 @@ td{
 }
 
 body{
-  background-image: url('../../images/background-img6.jpg');
-  background-position: center;
+  background-image: url('../../images/background-img2.jpg');
+  background-color: rgb(88, 76, 139);
+  background-blend-mode:lighten;
 }
