@@ -19,7 +19,7 @@ class EnquiryForm(ModelForm):
 class SearchForm(forms.Form):
     choices = [(bill.dateOnBill.strftime('%d-%m-%Y'), bill.dateOnBill.strftime('%d-%m-%Y')) for bill  in MonthlyBill.objects.all().order_by('-dateOnBill')]
     
-    dateOnBill = forms.ChoiceField(label='', widget=forms.Select(attrs={'class':'form-control px-5'}), choices=choices)
+    dateOnBill = forms.DateField(label='', widget=forms.DateInput(attrs={'class':'form-control -2', 'type':'date'}))
 
 
 class UserProfileForm(ModelForm):

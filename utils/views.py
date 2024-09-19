@@ -176,7 +176,7 @@ def profileView(request, id=None):
     
     if request.method == 'POST':
         billDate = request.POST['dateOnBill']
-        dateformate ='%d-%m-%Y'
+        dateformate ='%Y-%m-%d'
         now = datetime.strptime(billDate,dateformate)
     else:
         now = datetime.now()
@@ -187,7 +187,7 @@ def profileView(request, id=None):
 
         if request.method == "POST":
             billDate = request.POST['dateOnBill']
-            dateformate ='%d-%m-%Y'
+            dateformate ='%Y-%m-%d'
             billDate = datetime.strptime(billDate,dateformate)
             print(billDate.month)
             print(billDate.year)
