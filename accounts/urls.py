@@ -8,4 +8,5 @@ urlpatterns = [
     path('register/', views.registerView, name='register'),
     path('editUserPic/<int:id>/', views.editUserPicView, name='editUserPic'),
     path('editUserDetail/<int:id>/', views.editUserDetailView, name='editUserDetail'),
+    path('previousData/<int:id>', views.usePreviousDataView, name='previousData')
 ]

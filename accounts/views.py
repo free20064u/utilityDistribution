@@ -9,6 +9,9 @@ from utils.models import UserProfilePic
 
 
 # Create your views here.
+def usePreviousDataView(request, id=None):
+    pass
+
 def editUserDetailView(request, id=None):
     instance = User.objects.get(id=id)
     form = EditUserForm(instance=instance)
